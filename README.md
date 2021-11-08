@@ -82,6 +82,32 @@ function calcTotal(cart) {
     return total;
 }
 ```
+### Copy-on-write Pattern **(Array)**
+
+Often in Javascript we often use the built in *push* array method to add an element to an array.
+
+```js
+let myArray = [1,2,3,4];
+const element = 5;
+myArray.push(element);
+```
+
+This mutates the array which can cause a multitude of issues including having the array scattered in memory and unpredictability with async programs. 
+
+A functional solutions for this is to copy-on-wirte which just means make a copy of the array, add the new element to this copy then replace the old array with the copy.
+
+```js
+function addElementLast(array, element) {
+    arrayCopy = array.slice(); // slice makes a shallow copy of an array
+    arrayCopy.push(element);
+    return arrayCopy;
+}
+
+let myArray = [1,2,3,4];
+const element = 5;
+myArray = addElementLast(element);
+// [1,2,3,4,5];
+```
 
 ### Improving Actions by Replacing Implicit Inputs and Outputs with Explicit Ones
 

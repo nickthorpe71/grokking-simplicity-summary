@@ -6,71 +6,67 @@
 let shoppingCart = []; // A
 let shoppingCartTotal = 0; // A
 
-const shippingCost = 0.08;
-const tax = 0.13;
-
 function addItemToCart(name, price) { // A
-    shoppingCart = addItem(shoppingCart, name, price);
-    calcCartTotal();
+    const item = makeCartItem(name, price);
+    shoppingCart = addItem(shoppingCart, item);
+
+    const total = calcTotal(shoppingCart);
+    setCartTotalDOM(total);
+    updateShippingIcons(shoppingCart);
+    updateTaxDOM(total);
 }
 
-function calcCartTotal() { // A
-    shoppingCartTotal = calcTotal(shoppingCart);
-    setCartTotalDOM();
-    updateShippingIcons();
-    updateTaxDOM();
+function setCartTotalDOM(total) { // A
+    console.log("Cart total in DOM: " + total);
 }
 
-function setCartTotalDOM() { // A
-    console.log(shoppingCartTotal);
-}
-
-function updateShippingIcons() { // A
-    let buttons = getBuyButtonsDOM();
+function updateShippingIcons(cart) { // A
+    const buttons = getBuyButtonsDOM();
+    console.log("Shipping Icons:");
     for (let i = 0; i < buttons.length; i++) {
-        let button = buttons[i];
-        let item = button.item;
-        if (getsFreeShipping(shoppingCartTotal, item.price))
-            console.log('gets free shipping');
+        const button = buttons[i];
+        const item = button.item;
+        const newCart = addItem(cart, item);
+        if (getsFreeShipping(newCart))
+            console.log(item.name + ' - gets free shipping');
         else
-            console.log('no free shipping');
+            console.log(item.name + ' - no free shipping');
     }
 }
 
 function getBuyButtonsDOM() { // A
     return [
         {
-            item: {
-                name: "sword",
-                price: 15
-            }
+            item: makeCartItem("sword", 12)
         },
         {
-            item: {
-                name: "shield",
-                price: 22
-            }
+            item: makeCartItem("shield", 22)
         },
         {
-            item: {
-                name: "potion",
-                price: 2
-            }
+            item: makeCartItem("potion", 3)
         }
     ]
 }
 
-function updateTaxDOM() { // A
-    console.log(calcTax(shoppingCartTotal));
+function updateTaxDOM(total) { // A
+    console.log("Tax on cart: " + calcTax(total));
 }
 
-function addItem(cart, name, price) { // C
-    let newCart = cart.slice(); // copy cart array
-    newCart.push({
+function addElementLast(array, elem) {
+    const newArray = array.slice();
+    newArray.push(elem);
+    return newArray;
+}
+
+function addItem(cart, item) { // C
+    return addElementLast(cart, item);
+}
+
+function makeCartItem(name, price) {
+    return {
         name,
         price
-    });
-    return newCart;
+    };
 }
 
 function calcTotal(cart) { // C
@@ -82,13 +78,14 @@ function calcTotal(cart) { // C
     return total;
 }
 
-function getsFreeShipping(total, itemPrice) { // C
-    return itemPrice + total >= 20;
+function getsFreeShipping(cart) { // C
+    return calcTotal(cart) >= 20;
 }
 
 function calcTax(amount) { // C
     return amount * 0.10;
 }
 
+// Execute
 addItemToCart("sword", 12);
 console.log(shoppingCart);
