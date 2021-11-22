@@ -4,7 +4,7 @@ A repo that contains a summary of Grokking Simplicity by Eric Normand and code e
 
 Serves as part 4 of the [Feynman Technique](https://en.wikipedia.org/wiki/Feynman_Technique) to solidify and apply the knowledge I've gained from reading Grokking Simplicity.
 
-Part 1 is very valuable on it's own. There is a lot of value in being able to recognize and organizing your programs around actions, calculations and data.
+Part 1 is very valuable on its own. There is a lot of value in being able to recognize and organize your programs around actions, calculations, and data.
 
 Part 2 covers more complex functional ideas and tools. 
 
@@ -18,7 +18,7 @@ AKA - functions with side effects / impure functions
 
 Examples - Sending an email, reading from a database
 
-Actions are anything that have an effect on the world or are affected by the world. We want to try and use as few actions as possible and restrict them to interactions with the outside.
+Actions are anything that has an effect on the world or is affected by the world. We want to try and use as few actions as possible and restrict them to interactions with the outside.
 </details>
 </br>
 
@@ -30,7 +30,7 @@ AKA - pure functions / mathematical functions
 
 Examples - Finding the max number, check if an email is valid
 
-Caclulations will always give the same output given the same input no matter how many times or when they are run. 
+Calculations will always give the same output given the same input no matter how many times or when they are run. 
 
 Evaluation of a calculation has no side effects. Side effects refer to changing other attributes of the program not contained within the function, such as changing global variable values or using I/O streams.
 </details>
@@ -39,7 +39,7 @@ Evaluation of a calculation has no side effects. Side effects refer to changing 
 **Data**
 <details> 
 <summary>Facts about events</summary>
-Examples - The email address a user gave us, the dollar amount read from a banks API
+Examples - The email address a user gave us, the dollar amount read from a bank's API
 </details>
 </br>
 
@@ -49,7 +49,7 @@ Examples - The email address a user gave us, the dollar amount read from a banks
 - run them as many times as you want wherever you want
 - don't have to worry about what else is running
 
-For this example we have a function that calculates the total price of a shopping cart for an ecommerce website. The original function totals the cart price then updates the DOM.
+For this example, we have a function that calculates the total price of a shopping cart for an e-commerce website. The original function totals the cart price then updates the DOM.
 
 **Original**
 ``` js
@@ -90,9 +90,9 @@ function calcTotal(cart) {
 
 **Why is immutability important?**
 
-Mutation can cause a multitude of issues, lets use mutating an array as an exmaple.
+Mutation can cause a multitude of issues, let's use mutating an array as an example.
 
-Often in Javascript we often use the built in *push* array method to add an element to an array which is a mutation.
+Often in Javascript, we use the built-in *push* array method to add an element to an array which is a mutation.
 
 ```js
 let myArray = [1,2,3,4];
@@ -100,19 +100,19 @@ const element = 5;
 myArray.push(element);
 ```
 
-A functional solution for this is copy-on-wirte which just means make a copy of the array, add the new element to this copy then replace the old array with the copy.
+A functional solution for this is copy-on-write which just means making a copy of the array, adding the new element to this copy then replacing the old array with the copy.
 
 **Issues this causes**
 - The array can be scattered in memory
-    - *when the array is first created the memory is concurrent in memory but when we push to it the new item could end up somewhere else which increases memory usage and decreases effeciency of operations like searching*
+    - *when the array has first created the memory is concurrent in memory but when we push to it the new item could end up somewhere else which increases memory usage and decreases the efficiency of operations like searching*
 - If multiple asynchronous processes are using the array we could end up with bad data
-    - *languages that facilitate multithreading can be very complex especially when using mutable datastructures and/or mutable state*
+    - *languages that facilitate multithreading can be very complex especially when using mutable data structures and/or mutable state*
 
 These issues apply to other data structures as well.
 
 **Copy-on-write**
 
-Copy-on-write solves the issues above and changes what would usually be an *Action* (mutating an array, object, etc) into a *Calcilation*.
+Copy-on-write solves the issues above and changes what would usually be an *Action* (mutating an array, object, etc) into a *Calculation*.
 
 1. Make a copy, but never modify the original.
 2. The copy stays within the local scope of the function. That means no other code has access to it while we modify it.
@@ -185,7 +185,7 @@ function updateShippingIcons(cart) {
 ```
 It's a small change but in more complex scenarios it helps make sure things happen according to your design instead of unexpected times.
 
-Implicit outputs limit when you can call the function as well. You can only call the function if you want that output to happen. What if you don’t want to output to the DOM at that time? What if you need the result, but put somewhere else?
+Implicit outputs limit when you can call the function as well. You can only call the function if you want that output to happen. What if you don’t want to output to the DOM at that time? What if you need the result, but put it somewhere else?
 
 This function has an explicit input but an implicit output:
 ```js
@@ -225,7 +225,7 @@ function addItemToCart(cart, name, price) {
     return newCart;
 }
 ```
-Notice how we can now save the new item to a variable instead of immediately adding it to the cart. In this simple example we still add it to the cart right after creating it but if we needed to do something else to the item, or pass it to another funciton, we could.
+Notice how we can now save the new item to a variable instead of immediately adding it to the cart. In this simple example, we still add it to the cart right after creating it but if we needed to do something else to the item, or pass it to another function, we could.
 
 ### Stratified Design
 
@@ -233,11 +233,11 @@ Stratified design is a technique for building software in layers. Each layer def
 
 An example of these layers could be:
 - business rules
-- domain specific operations
+- domain-specific operations
 - general operations
 - language features
 
-An ecommerce app as an example:
+An e-commerce app as an example:
 
 **business rules**
 
@@ -246,9 +246,9 @@ Functions that align with decisions the business makes.
 - getsFreeShipping()
 - isPrimeMember()
 
-**domain specific operations**
+**domain-specific operations**
 
-Functions that are specific to the functionality of the application and don't need to be concerned with the underlying datastructures.
+Functions that are specific to the functionality of the application and don't need to be concerned with the underlying data structures.
 
 - calcCartTotal()
 - getItemPrice()
@@ -264,7 +264,7 @@ Functions that are designed to add additional functionality on top of the standa
 
 **language features**
 
-Functions that are build in to the language we are using.
+Functions that are built into the language we are using.
 
 - splice()
 - slice()
@@ -282,13 +282,13 @@ With this structure, the rules around whether an item gets free shipping can cha
 ---
 ## Part 2: First-class Abstractions
 
-A first class abstraction is taking something like a function, for loop, or try/catch statement and treating it like a value. This means you can pass them to functions, return them from functions, store them in variables, etc.
+A first-class abstraction is taking something like a function, for loop, or try/catch statement and treating it like a value. This means you can pass them to functions, return them from functions, store them in variables, etc.
 
-This can lead to what is called meta programming. 
+This can lead to what is called metaprogramming. 
 
 ### Higher Order Functions
 
-A higher order function is a function that takes a function as an argument, or returns a function, or both.
+A higher-order function is a function that takes a function as an argument or returns a function or both.
 
 **Argument:**
 ```js
@@ -344,23 +344,23 @@ const storedFunction = outerFunction();
 storedFunction();
 // prints 'hi'
 ```
-In the example above we are using a closure to store the function `innerFunction` along with the string variable 'hi' in another function called `storedFunction`. This is powerful because it not only allows us to treat a function as a variable but also store an environment with that function.
+In the example above we are using a closure to store the function's inner function along with the string variable 'hi' in another function called `storedFunction`. This is powerful because it not only allows us to treat a function as a variable but also store an environment with that function.
 
 ### Combinators
 
-*This section is not covered directly in Grokking Simplicity but I wanted to add it for later reference since it applies to the discussion of first class abstractions*
+*This section is not covered directly in Grokking Simplicity but I wanted to add it for later reference since it applies to the discussion of first-class abstractions*
 
-**Technical Explaination**
+**Technical Explanation**
 
-A combinator is a an expression with no free variables. That is, it is either a constant, or a lambda expression which only refers to its bound variables.
+A combinator is an expression with no free variables. That is, it is either a constant or a lambda expression that only refers to its bound variables.
 
 Examples of combinators:
 
 - 2  is a constant, and therefore a combinator.
-- λx.x  is a lambda expression which only refers to the bound variable  x , and therefore a combinator.
+- λx.x  is a lambda expression that only refers to the bound variable x, and therefore a combinator.
 - λx.y  is not a combinator; it has a free variable.
 
-**Simplified Explaination**
+**Simplified Explanation**
 A combinator is a function that takes one or more functions and transforms them into a new function. They allow you to put together pieces of logic in interesting and advanced manners. 
 
 An example of this is a function that takes two functions and returns a new function that runs them in sequence.
@@ -410,11 +410,11 @@ counter();
 // prints 1 2 3 4 5 6 7 8
 ```
 
-Three of the most popular functional tools are map, filter and reduce. These are examples of things that are done so frequently, it's worth abstracting them.
+Three of the most popular functional tools are map, filter, and reduce. These are examples of things that are done so frequently, it's worth abstracting them.
 
 #### Map 
-Iterate over a datastructure and do something to each element.
-Javascript comes with a built in array method for map but you can wirte a custom map function as well.
+Iterate over a data structure and do something to each element.
+Javascript comes with a built-in array method for map but you can write a custom map function as well.
 
 **map array example**
 ```js
@@ -475,8 +475,8 @@ increaseScores({
 ```
 
 #### Filter
-Iterate over a datastructure and filter out any elements that don't pass the given condition.
-Javascript comes with a built in array method for filter but you can wirte a custom filter function as well.
+Iterate over a data structure and filter out any elements that don't pass the given condition.
+Javascript comes with a built-in array method for filter but you can write a custom filter function as well.
 
 **filter array example**
 ```js
@@ -534,8 +534,8 @@ playersOverLevel([
 ```
 
 #### Reduce
-Accumulatte a value while iterating over a datastruvture.
-Javascript comes with a built in array method for reduce but you can wirte a custom reduce function as well.
+Accumulate a value while iterating over a data structure.
+Javascript comes with a built-in array method for reduce but you can write a custom reduce function as well.
 
 Accumulating a value is kind of an abstract idea. It could take many concrete forms. For instance, adding things up is an accumulation. So is adding stuff to a hash map or concatenating strings. You get to decide what accumulation means by the function you pass in.
 
@@ -575,19 +575,163 @@ The second is how to determine the initial value. It depends on the operation an
 - Where does the calculation start? For instance, summing starts at zero, so that’s the initial value for addition. But multiplying starts at 1, so that’s the initial value for multiplication.
 - What value should you return if the array is empty? In the case of an empty list of strings, concatenating them should be an empty string.
 
+### Other Functional Tools
 
-map(), filter(), and reduce() are essentially specialized for loops over arrays. They can replace those for loops and add clarity because they are special-purpose
+**pluck()**
+
+Tired of writing callbacks for map() that just pull out a field? pluck() is your answer:
+```js
+function pluck(array, field) {
+    return map(array, function(object) {
+        return object[field];
+    });
+}
+```
+
+**concat()**
+
+concat() unnests arrays inside of an array. It removes that one pesky level of nesting:
+
+```js
+function concat(arrays) {
+    var ret = [];
+    forEach(arrays, function(array) {
+        forEach(array, function(element) {
+            ret.push(element);
+        });
+    });
+    return ret;
+}
+```
+
+**frequenciesBy() and groupBy()**
+
+Counting and grouping are invaluable. These functions return objects (hash maps):
+
+```js
+function frequenciesBy(array, f) {
+    var ret = {};
+    forEach(array, function(element) {
+        var key = f(element);
+        if(ret[key]) ret[key] += 1;
+        else     ret[key] = 1;
+    });
+    return ret;
+}
+ 
+function groupBy(array, f) {
+    var ret = {};
+    forEach(array, function(element) {
+        var key = f(element);
+        if(ret[key]) ret[key].push(element);
+        else     ret[key] = [element];
+    });
+    return ret;
+}
+```
+
+**update()**
+update() is another important functional tool. The functional tools we learned in the last chapters operated on arrays, but this one operates on objects (treated as hash maps). Let’s look at it more closely:
+
+```js
+function update(object, key, modify) {
+    var value = object[key];
+    var newValue = modify(value);
+    var newObject = objectSet(object, key, newValue);
+    return newObject;
+}
+```
 
 ### Chaining Functional Tools Into Data Transformation Pipelines
 
-### Understanding Distributed and Concurrent Systems with Timeline Diagrams
+We can also use functional tools in sequence.
 
-### Manipulating Timelines to Eleminate Bugs
+Here's an example:
 
-### Mutating State Safely with Higher-order Functions
+```js
+function shoesAndSocksInventory(products) { 
+    const shoesAndSocks = filter(products, function(product) { 
+        return product.type === "shoes" || product.type === "socks"; 
+    }); 
+    const inventoryCounts = map(shoesAndSocks, function(product) { 
+        return product.numberInInventory; 
+    }); 
+    return reduce(inventoryCounts, 0, plus); 
+}
+```
 
-### Reactive Architecture
+This can also be chained together in JS:
 
-Used to decouple cause and effect.
+```js
+function shoesAndSocksInventory(products) 
+    => filter(products, product => product.type === "shoes" || product.type === "socks")
+      .map(shoesAndSocks, product => product.numberInInventory)
+      .reduce(inventoryCounts, 0, plus);
+```
 
-### Onion Architecture
+### Functional Tools for Nested Data
+
+If we have an object and we want to call the update function on it which updates a specific value by key we can use recursion. 
+
+Let's take this object as an example:
+
+```js
+const cart = {
+    shirt: {
+        name: "shirt",
+        price: 13,
+        options: {
+            color: "blue",
+            size: 3
+        }
+    }
+}
+```
+This nestedUpdate function can be used to modify a specific value inside a nested data structure.
+```js
+function update(object, key, modify) {
+    var value = object[key];
+    var newValue = modify(value);
+    var newObject = objectSet(object, key, newValue);
+    return newObject;
+}
+
+function nestedUpdate(object, keys, modify) {
+    if(keys.length === 0)
+        return modify(object);
+    const key1 = keys[0];
+    const restOfKeys = drop_first(keys);
+    return update(object, key1, function(value1) {
+        return nestedUpdate(value1, restOfKeys, modify);
+    });
+}
+
+// use case to increment the size of the shirt in our nested cart object
+nestedUpdate(cart, ["shirt", "options", "size"], increment)
+```
+
+The "keys" argument can also be called a path. This is a series of levels that need to be traversed to get the key of the value we are trying to update. 
+
+**Recursion**
+Recursion means a function that calls itself. Recursion is useful when a problem can be divided into smaller problems that can all use the same algorithm to solve them. In our example the algorithm is:
+1. store the first key in the keys array 
+2. remove the first key from the keys array
+3. pass the object and the first key in the keys array into update along with a recursive call to nestedUpdate
+4. update receives the recursive call to nested update and runs it on the value associated with the key passed in
+
+This is repeated until we hit the `base case` which, in this situation, is when there are no more keys in the keys array.
+
+The nestedUpdate function uses recursion to move through each key in the keys array and call itself at each level.
+
+**Base Case** 
+Some kind of condition to tell the recursive function to stop calling itself.
+
+## Conclusion
+
+I learned am amazing amount from this book and have already been able to put some of what I learned into practice.
+
+I strongly recommend [this book](https://www.manning.com/books/grokking-simplicity?gclid=Cj0KCQiA-eeMBhCpARIsAAZfxZAMxyX1UrZIrIruLAbrCGoDz2ikq0lB6nTdOPEeMl2irsRiFAq51noaArbCEALw_wcB) to anyone who wants to learn more about the topics summarized above. 
+
+## Footnote
+
+This was a summary of roughly the first 75% of the Grokking Simplicity. The later chapters discuss distributed systems and architecture. I find these topics equally interesting and the content equally useful but I wanted to keep this summary as focused as possible. 
